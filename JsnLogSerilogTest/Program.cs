@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace JsnLogSerilogTest
 {
@@ -14,7 +15,25 @@ namespace JsnLogSerilogTest
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("C:\\Temp\\log.txt")
+                .WriteTo.Console()
+                .CreateLogger();
+
+            try
+            {
+                Log.Information("Starting application");
+
+                CreateWebHostBuilder(args).UseSerilog().Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Uncaught exception: host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

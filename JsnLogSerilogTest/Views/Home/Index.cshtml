@@ -6,3 +6,12 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<script>
+    JL().info("Test string");
+    JL().info(["Test", "array"]);
+    JL().warn({ message: "Test object", data: [1, 2, "z", true, { a: 9, b: 8 }] });
+    JL().error(new Error("Test error"));
+    var notAFunction = "Test unhandled error";
+    notAFunction();
+</script>
